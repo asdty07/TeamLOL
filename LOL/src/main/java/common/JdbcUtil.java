@@ -19,7 +19,7 @@ public class JdbcUtil {
 	// java and db 연결
 	public static Connection getConnection() {
 		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "icia", "1234");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mylol", "lol", "1234");
 			//con.setAutoCommit(false);
 			System.out.println("db 접속 성공");
 			return con;

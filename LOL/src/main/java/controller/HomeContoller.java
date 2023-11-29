@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.SearchChamp;
 import common.Forward;
 
-@WebServlet({"/login","/loginfrm","/joinfrm","/join","/logout","/main", "/memberList", "/memberInfo", "/memberDelete"})
+@WebServlet({"/search", "/champList"})
 public class HomeContoller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -19,29 +20,19 @@ public class HomeContoller extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		
 		String cmd = request.getServletPath();
-		System.out.println("cmd="+cmd);
-		
+		System.out.println("cmd=" + cmd);
 		
 		Forward fw = null;
 		
-//		if(cmd.equals("/loginfrm")) {
-//			fw = mp.showLoginFrm(cmd);			
-//		} else if(cmd.equals("/login")) {
-//			fw = mm.login();
-//		} else if(cmd.equals("/joinfrm")) {
-//			fw = mp.showJoinFrm();
-//		} else if(cmd.equals("/join")) {
-//			fw = mm.join();
-//		} else if(cmd.equals("/logout")) {
-//			fw = mm.logOut();
-//		} else if(cmd.equals("/memberList")) {
-//			fw = mm.getMemberList();
-//		} else if(cmd.equals("/memberInfo")) {
-//			fw = mm.getMemberInfo();
-//		} else if(cmd.equals("/memberDelete")) {
-//			String id = request.getParameter("id");
-//			fw = mm.memberDelete(id);
-//		}
+		// 챔피언 검색
+		SearchChamp sc = new SearchChamp(request, response);
+		
+		if(cmd.equals("/search")) {
+			fw = sc.search();
+		} else if(cmd.equals("/champList")) {
+			fw = sc.list();
+		}
+		
 		
 		if(fw != null) {
 			if(fw.isRedirect()) { //true: redirect
