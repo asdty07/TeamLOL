@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import bean.SearchChamp;
 import common.Forward;
 
-@WebServlet({"/search", "/champList"})
+@WebServlet({"/search", "/champList", "/kda"})
 public class HomeContoller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -29,8 +29,8 @@ public class HomeContoller extends HttpServlet {
 		
 		if(cmd.equals("/search")) {
 			fw = sc.search();
-		} else if(cmd.equals("/champList")) {
-			fw = sc.list();
+		} else if(cmd.equals("/kda")) {
+			fw = sc.kda();
 		}
 		
 		
