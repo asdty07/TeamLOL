@@ -36,5 +36,7 @@
 
 	        // 테이블을 body에 추가
 	        document.body.appendChild(table);
+	        
+	        
 	</script>
 </html>
