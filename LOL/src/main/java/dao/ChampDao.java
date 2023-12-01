@@ -28,8 +28,8 @@ public class ChampDao {
 
 	    try {
 	        pstmt = con.prepareStatement(sql);
-	        pstmt.setString(1, "%" + search + "%");
-	        pstmt.setString(2, "%" + search + "%");
+	        pstmt.setString(1, search);
+	        pstmt.setString(2, search);
 
 	        rs = pstmt.executeQuery();
 
@@ -67,14 +67,17 @@ public class ChampDao {
 	}
 
 	public List<String> getAllChampions() {
-		String sql = "select champion_name_kr from ch_kr order by champion_name_kr asc";
+		   String sql = "SELECT kr.champion_name_kr AS krName, en.champion_name_en AS enName "
+	               + "FROM ch_kr AS kr JOIN cn_en AS en ON kr.championId = en.championId "
+	               + "ORDER BY krName ASC, enName ASC";
 		List<String> cList = new ArrayList<String>(); 
 		try {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				String cName = rs.getString("champion_name_kr");
+				String cName = rs.getString("krName");
+				
 				cList.add(cName);
 			}
 		} catch (SQLException e) {
@@ -92,7 +95,7 @@ public class ChampDao {
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, "%" + name + "%");
+			pstmt.setString(1, name);
 			
 			rs = pstmt.executeQuery();
 			
@@ -105,5 +108,50 @@ public class ChampDao {
 			e.printStackTrace();
 		}
 		return totalKda;
+	}
+
+	public List<String> champPick(String name) {
+		String sql = "SELECT concat(ROUND((SELECT COUNT(*)FROM champ WHERE kr = ?) / 100000 * 100, 2),'%') as pickrate";
+		
+		List<String> pickList = new ArrayList<String>();
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, name);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String pick = rs.getString("pickrate");
+				
+				pickList.add(pick);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pickList;
+	}
+
+	public List<String> champWins(String wins) {
+		String sql = "SELECT concat(ROUND((SELECT COUNT(*) FROM champ WHERE kr = ? AND WIN = 'TRUE') / (SELECT COUNT(*) FROM champ WHERE kr = ?) * 100, 2),'%') AS WINRATE";
+		
+		List<String> win = new ArrayList<String>();
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, wins);
+			pstmt.setString(2, wins);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String cWin = rs.getString("WINRATE");
+				
+				win.add(cWin);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return win;
 	}
 }

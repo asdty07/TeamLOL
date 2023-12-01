@@ -67,7 +67,7 @@ public class SearchChamp {
 
 		System.out.println("json : " + json);
 
-		fw.setPath("/kda.jsp");
+		fw.setPath("/champInfo.jsp");
 		fw.setRedirect(false);
 		return fw;
 	}
